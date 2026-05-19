@@ -8,6 +8,12 @@ The project starts with one simple idea: useful knowledge should move through cl
 
 This repository begins as design-only on purpose. The first public goal is to invite feedback on the model before code, templates, or automation harden too early.
 
+## Project Origin
+
+Library will be built from lessons learned in UM2M, an earlier internal project that explored source-grounded knowledge organization, staged review, agent-assisted workflows, and console-driven navigation.
+
+The public project should not require users to understand UM2M. UM2M is the starting prototype and learning source; Library is the standalone community version. Public contributors should feel free to simplify, rename, challenge, or replace inherited ideas when a clearer design emerges.
+
 ## Design Goals
 
 Library should be:
@@ -218,6 +224,25 @@ Possible automation:
 
 Automation should always preserve traceability. If a tool writes or proposes content, readers should be able to see what source material was used and what review state the output is in.
 
+## Agent Improvement Model
+
+Library should invite contributors to improve the agents that help maintain, query, review, and extend the library.
+
+Agents may eventually help with:
+
+- discovering candidate sections from source material
+- building and checking source maps
+- drafting briefs and guides
+- finding missing evidence
+- identifying unclear or unsupported claims
+- preparing review items for humans
+- explaining why a section changed over time
+- helping maintainers navigate the console
+
+Agent contributions should be judged by usefulness, traceability, clarity, and safety. An agent should make the library easier to understand and improve; it should not hide uncertainty, invent unsupported claims, or bypass human review.
+
+Useful agent contributions may include prompt designs, workflow definitions, evaluation cases, test libraries, review protocols, UI ideas, provider adapters, and examples of failed agent behavior that the project should learn from.
+
 ## Maturity Model
 
 Sections may move through maturity levels:
@@ -241,6 +266,8 @@ Useful contributions may include:
 - better templates
 - example libraries
 - console design feedback
+- agent workflow improvements
+- agent evaluation examples
 - accessibility feedback
 - automation ideas
 - review workflow improvements
@@ -261,6 +288,8 @@ Contributors should feel welcome to challenge the design. The goal is not to pre
 8. How should AI-generated content be labeled and reviewed?
 9. What makes a section mature enough to become a decision?
 10. What license and governance model would best support public reuse and contribution?
+11. Which agent roles would be most useful first: section discovery, source mapping, brief drafting, review support, or console navigation?
+12. What tests should an agent pass before its output is trusted by maintainers?
 
 ## First Implementation Proposal
 
