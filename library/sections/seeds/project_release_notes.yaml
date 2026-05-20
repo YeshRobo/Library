@@ -1,0 +1,20 @@
+section_slug: project_release_notes
+section_title: Project Release Notes
+section_brief: A section for organizing source-grounded release note knowledge before maintainers publish release announcements.
+status: discovered
+discovery_basis:
+  - Release note planning notes identify a repeated need to gather, classify, and review change information before it becomes public announcement text.
+title_candidates:
+  - Project Release Notes
+  - Release Note Workflow
+candidate_supporting_files:
+  - path: library/sources/project_release_notes_source.md
+    reason: Captures the initial source notes and open questions for release note planning.
+questions:
+  - How should user-visible changes be separated from internal maintenance?
+  - How should contributor-proposed entries be reviewed before acceptance?
+out_of_scope:
+  - Writing final release announcements for a specific software version.
+  - Replacing project changelogs or package metadata.
+notes:
+  - This example is intentionally neutral and small so it can validate the v0 file model.

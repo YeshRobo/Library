@@ -1,0 +1,15 @@
+section_slug: section_slug
+section_title: Section Title
+status: draft
+source_entries:
+  - library/sources/example_source.md
+member_files:
+  - path: library/sources/example_source.md
+    role: primary
+    contribution: Explain why this file belongs to the section.
+library_surfaces:
+  - library/sections/index/section_slug.md
+  - library/sections/briefs/section_slug.md
+# Add `library/sections/guides/section_slug.md` here only when a full guide exists for the section.
+notes:
+  - The same file may appear in multiple source maps when it supports multiple sections.

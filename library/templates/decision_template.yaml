@@ -1,0 +1,14 @@
+decision_slug: example_decision
+decision_title: Example Decision
+status: accepted
+decision_date: 2026-05-19
+related_sections:
+  - example_section
+supporting_surfaces:
+  - library/sections/briefs/example_section.md
+decision: One short statement of what has been accepted.
+rationale: Why this decision was accepted.
+consequences:
+  - What changes because of this decision.
+open_questions:
+  - What remains unresolved after this decision.
