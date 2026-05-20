@@ -2,17 +2,17 @@
 
 ## Purpose
 
-Library is a source-grounded section library for turning raw project material into organized, traceable, topic-centered knowledge.
+Library is a source-grounded section library for turning raw project material into organized, traceable books.
 
-The project starts with one simple idea: useful knowledge should move through clear stages before it becomes guidance, documentation, or implementation work. Library provides those stages as a reusable structure that other projects can adopt, adapt, and improve.
+The project starts with one simple idea: useful books should not appear from nowhere. They should grow from sources, section seeds, source maps, and compact briefs before becoming long-form readable knowledge.
 
-This repository begins as design-only on purpose. The first public goal is to invite feedback on the model before code, templates, or automation harden too early.
+This repository begins with a file-based model on purpose. The first public goal is to make the source-to-book workflow clear before the console or agent workflows become larger.
 
 ## Project Origin
 
-Library will be built from lessons learned in UM2M, an earlier internal project that explored source-grounded knowledge organization, staged review, agent-assisted workflows, and console-driven navigation.
+Library will be built from lessons learned in UM2M, an earlier internal project that explored source-grounded knowledge organization, staged synthesis, agent-assisted workflows, and console-driven navigation.
 
-The public project should not require users to understand UM2M. UM2M is the starting prototype and learning source; Library is the standalone community version. Public contributors should feel free to simplify, rename, challenge, or replace inherited ideas when a clearer design emerges.
+The public project should not require users to understand UM2M. UM2M is the starting prototype and learning source; Library is the standalone community version. Public contributors should feel free to simplify, rename, challenge, or replace inherited ideas when a clearer source-to-book design emerges.
 
 ## Design Goals
 
@@ -21,6 +21,7 @@ Library should be:
 - easy to understand without special terminology
 - useful for small projects and large knowledge bases
 - source-grounded, with clear traceability back to original material
+- focused on producing readable books from organized library material
 - friendly to human readers and AI-assisted workflows
 - structured enough to support automation
 - flexible enough to support different domains
@@ -32,33 +33,35 @@ Library should avoid:
 - project-specific vocabulary
 - binding claims that cannot be traced to source material
 - forcing every project into the same folder layout before the pattern is proven
-- turning early notes directly into final decisions
+- turning early notes directly into long-form books
 
 ## Core Idea
 
 Library organizes knowledge through a staged flow:
 
 ```text
-sources -> sections -> briefs -> guides -> decisions
+sources -> section seeds -> section indexes -> source maps -> briefs -> books
 ```
 
 Each stage has a different job.
 
 `sources` preserve raw or lightly processed material.
 
-`sections` identify stable topics and gather related source material.
+`section seeds` identify topics that may deserve organized treatment.
+
+`section indexes` route readers to the surfaces for one section.
+
+`source maps` gather the files that support a section and explain why each file belongs.
 
 `briefs` summarize what is currently understood about a section.
 
-`guides` expand mature sections into long-form, readable knowledge.
+`books` expand mature sections into long-form, readable knowledge.
 
-`decisions` capture accepted direction, policy, or implementation intent after review.
-
-The stages are deliberately separate. A source is not a decision. A brief is not a final guide. A guide is not automatically project policy. This separation keeps knowledge useful without making it prematurely authoritative.
+The stages are deliberately separate. A source is not a book. A seed is not a brief. A brief is not automatically a complete book. This separation keeps knowledge traceable and lets books mature from grounded material.
 
 ## Proposed Repository Shape
 
-The future repository may grow into this shape:
+The file-based core uses this shape:
 
 ```text
 Library/
@@ -70,19 +73,13 @@ Library/
       index/
       maps/
       briefs/
-      guides/
-    reviews/
-    decisions/
-  console/
-    backend/
-    frontend/
-    catalog/
-    runs/
-  docs/
+      books/
+    templates/
+  src/
   tests/
 ```
 
-This is a proposed shape, not a locked contract. The public discussion should decide what belongs in the first implementation.
+Future console and agent code should serve this model rather than replace it.
 
 ## Library Components
 
@@ -90,7 +87,7 @@ This is a proposed shape, not a locked contract. The public discussion should de
 
 Sources are the raw inputs to the library. They may include notes, reports, transcripts, issue summaries, research excerpts, design sketches, audit results, or other source material.
 
-A source should preserve context rather than rewrite it too aggressively. The goal is to keep later library work traceable.
+A source should preserve context rather than rewrite it too aggressively. The goal is to keep later briefs and books traceable.
 
 ### Section Seeds
 
@@ -114,7 +111,7 @@ A good index answers:
 
 - What is this section about?
 - Where did the section come from?
-- Which briefs, guides, maps, and source files belong to it?
+- Which source maps, briefs, books, and source files belong to it?
 - What is the current maturity level of the section?
 
 The index should be fast to scan. It should help humans and tools find the right material without reading the whole library.
@@ -147,11 +144,11 @@ A good brief answers:
 
 Briefs should be short enough to retrieve quickly and rich enough to preserve important distinctions.
 
-### Guides
+### Books
 
-A guide is an optional long-form treatment of a mature section.
+A book is an optional long-form treatment of a mature section.
 
-A good guide answers:
+A good book answers:
 
 - What is the complete topic narrative?
 - How do the sources relate to each other?
@@ -159,52 +156,23 @@ A good guide answers:
 - What does the reader need to know before acting on this topic?
 - What questions remain open?
 
-Guides should not turn into final policy by accident. They are deep knowledge surfaces, not automatic decisions.
-
-### Reviews
-
-Reviews capture proposed improvements, gaps, corrections, and disputes.
-
-A good review answers:
-
-- What is missing or unclear?
-- Which section is affected?
-- What source material supports the concern?
-- What change is proposed?
-- What should happen before acceptance?
-
-Reviews make the library safer to improve in public because they separate suggested change from accepted change.
-
-### Decisions
-
-Decisions capture accepted direction after review.
-
-A good decision answers:
-
-- What has been accepted?
-- Why was it accepted?
-- Which sources, briefs, guides, or reviews support it?
-- What changes because of this decision?
-- What remains open?
-
-Decisions should be explicit and traceable. The library should help teams understand not only what was decided, but why.
+Books are deep knowledge surfaces. They should remain source-grounded and should clearly mark inference when the source material does not directly state a claim.
 
 ## Console Concept
 
 Library should eventually include its own console.
 
-The console should be a practical interface for browsing, querying, reviewing, and improving a section library. It should not replace the file-based structure. The files remain the durable project surface; the console makes that surface easier to use.
+The console should be a practical interface for browsing, querying, and building section books. It should not replace the file-based structure. The files remain the durable project surface; the console makes that surface easier to use.
 
 The console may include:
 
 - a section browser
 - source traceability views
-- brief and guide readers
-- review queues
+- brief and book readers
 - maturity indicators
 - search and query tools
-- provider adapters for AI-assisted workflows
-- run records for generated or reviewed outputs
+- provider adapters for AI-assisted book workflows
+- run records for generated outputs
 
 The console should be data-driven. Project-specific behavior should live in configuration, not hardcoded assumptions.
 
@@ -216,42 +184,43 @@ Possible automation:
 
 - propose section seeds from new source material
 - detect source files that may belong to existing sections
+- draft source maps
 - draft briefs from mapped sources
-- compare briefs against source evidence
-- identify stale sections
-- suggest review items
+- expand mature briefs into book drafts
+- compare briefs and books against source evidence
+- identify stale or unsupported book claims
 - generate run records for AI-assisted work
 
-Automation should always preserve traceability. If a tool writes or proposes content, readers should be able to see what source material was used and what review state the output is in.
+Automation should always preserve traceability. If a tool writes or proposes content, readers should be able to see what source material was used and what generation state the output is in.
 
 ## Agent Improvement Model
 
-Library should invite contributors to improve the agents that help maintain, query, review, and extend the library.
+Library should invite contributors to improve the agents that help maintain, query, and extend the source-to-book workflow.
 
 Agents may eventually help with:
 
 - discovering candidate sections from source material
 - building and checking source maps
-- drafting briefs and guides
+- drafting briefs
+- drafting books
 - finding missing evidence
 - identifying unclear or unsupported claims
-- preparing review items for humans
-- explaining why a section changed over time
+- explaining why a book changed over time
 - helping maintainers navigate the console
 
-Agent contributions should be judged by usefulness, traceability, clarity, and safety. An agent should make the library easier to understand and improve; it should not hide uncertainty, invent unsupported claims, or bypass human review.
+Agent contributions should be judged by usefulness, traceability, clarity, and safety. An agent should make the library easier to understand and improve; it should not hide uncertainty, invent unsupported claims, or apply generated books without human approval.
 
-Useful agent contributions may include prompt designs, workflow definitions, evaluation cases, test libraries, review protocols, UI ideas, provider adapters, and examples of failed agent behavior that the project should learn from.
+Useful agent contributions may include prompt designs, workflow definitions, evaluation cases, test libraries, UI ideas, provider adapters, and examples of failed agent behavior that the project should learn from.
 
 ## Maturity Model
 
 Sections may move through maturity levels:
 
 ```text
-seeded -> indexed -> mapped -> briefed -> guided -> decision-linked
+seeded -> indexed -> mapped -> briefed -> booked
 ```
 
-A section does not need to reach every level. Some topics may only need a seed and a brief. Others may justify a full guide and decisions.
+A section does not need to reach every level. Some topics may only need a seed and a brief. Others may justify a full book.
 
 The maturity model should be useful, not ceremonial.
 
@@ -265,41 +234,41 @@ Useful contributions may include:
 - simpler folder layouts
 - better templates
 - example libraries
+- example books
 - console design feedback
 - agent workflow improvements
 - agent evaluation examples
 - accessibility feedback
 - automation ideas
-- review workflow improvements
 - documentation edits
 - concerns about complexity
 
-Contributors should feel welcome to challenge the design. The goal is not to preserve the first draft. The goal is to build a practical public library system that other people would actually use.
+Contributors should feel welcome to challenge the design. The goal is not to preserve the first draft. The goal is to build a practical public library system that other people would actually use to make books from source-grounded knowledge.
 
 ## Questions For Contributors
 
 1. Is "section library" the clearest name for this pattern, or should the project use another term?
 2. Are the proposed stages too many, too few, or just enough?
-3. Should `briefs` and `guides` be separate, or should they be one document type with different lengths?
+3. Should `briefs` and `books` be separate, or should they be one document type with different lengths?
 4. What is the smallest useful version of this system?
 5. What should the first console view be?
 6. Should the console be included in this repo from the start, or should it remain a later package?
 7. What file formats should be supported first: Markdown, YAML, JSON, or something else?
-8. How should AI-generated content be labeled and reviewed?
-9. What makes a section mature enough to become a decision?
+8. How should AI-generated book content be labeled?
+9. What makes a section mature enough to become a book?
 10. What license and governance model would best support public reuse and contribution?
-11. Which agent roles would be most useful first: section discovery, source mapping, brief drafting, review support, or console navigation?
-12. What tests should an agent pass before its output is trusted by maintainers?
+11. Which agent roles would be most useful first: section discovery, source mapping, brief drafting, book drafting, or console navigation?
+12. What tests should an agent pass before its book output is trusted by maintainers?
 
 ## First Implementation Proposal
 
 The first implementation should stay small:
 
-1. Define templates for seeds, indexes, maps, briefs, guides, reviews, and decisions.
+1. Define templates for seeds, indexes, maps, briefs, and books.
 2. Add one complete example library with neutral sample content.
-3. Build a read-only console that can browse the example library.
-4. Add validation for required fields and broken links.
-5. Add write workflows only after the read-only model is clear.
+3. Add validation for required fields and broken links.
+4. Build a read-only console that can browse the example library.
+5. Add agent-assisted book drafting only after the file model is clear.
 
 This order keeps the project understandable while giving contributors something concrete to test.
 

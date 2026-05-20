@@ -10,9 +10,9 @@ from typing import Any, Iterable
 import yaml
 
 
-VALID_SEED_STATUSES = {"discovered", "indexed", "mapped", "briefed", "guided", "decision-linked"}
-VALID_MAP_STATUSES = {"draft", "stable", "needs_review"}
-VALID_STAGES = {"seeded", "indexed", "mapped", "briefed", "guided", "decision-linked"}
+VALID_SEED_STATUSES = {"discovered", "indexed", "mapped", "briefed", "booked"}
+VALID_MAP_STATUSES = {"draft", "stable", "needs_work"}
+VALID_STAGES = {"seeded", "indexed", "mapped", "briefed", "booked"}
 
 REQUIRED_DIRECTORIES = (
     "library/sources",
@@ -20,9 +20,7 @@ REQUIRED_DIRECTORIES = (
     "library/sections/index",
     "library/sections/maps",
     "library/sections/briefs",
-    "library/sections/guides",
-    "library/reviews",
-    "library/decisions",
+    "library/sections/books",
     "library/templates",
 )
 
@@ -31,15 +29,13 @@ TEMPLATE_FILES = (
     "library/templates/section_index_template.md",
     "library/templates/source_map_template.yaml",
     "library/templates/brief_template.md",
-    "library/templates/guide_template.md",
-    "library/templates/review_template.yaml",
-    "library/templates/decision_template.yaml",
+    "library/templates/book_template.md",
 )
 
 REQUIRED_MARKDOWN_HEADINGS = {
     "library/sections/index": ("## Section", "## Source Entries", "## Library Surfaces", "## Current Stage"),
     "library/sections/briefs": ("## Scope", "## Sources", "## Current Understanding", "## Constraints And Tensions", "## Next Use"),
-    "library/sections/guides": (
+    "library/sections/books": (
         "## Scope",
         "## Reading Map",
         "## Sources",
@@ -93,8 +89,6 @@ def validate_repository(repo_root: Path | str) -> ValidationResult:
     _validate_section_seeds(root, result)
     _validate_source_maps(root, result)
     _validate_markdown_sections(root, result)
-    _validate_reviews(root, result)
-    _validate_decisions(root, result)
 
     return result
 
@@ -148,34 +142,6 @@ def _validate_markdown_sections(root: Path, result: ValidationResult) -> None:
                     result.error(path, f"missing required heading: {heading}")
             _validate_inline_paths(text, root, path, result)
             _validate_stage_values(text, path, result)
-
-
-def _validate_reviews(root: Path, result: ValidationResult) -> None:
-    review_dir = root / "library/reviews"
-    for path in sorted(review_dir.glob("*.yaml")):
-        data = _load_mapping(path, result)
-        if data is None:
-            continue
-        _require_slug(data, "review_slug", path, result)
-        _require_non_empty_string(data, "review_title", path, result)
-        _require_non_empty_string(data, "status", path, result)
-        _require_non_empty_string(data, "affected_section", path, result)
-        _validate_path_list(data.get("source_evidence"), root, path, "source_evidence", result)
-
-
-def _validate_decisions(root: Path, result: ValidationResult) -> None:
-    decision_dir = root / "library/decisions"
-    for path in sorted(decision_dir.glob("*.yaml")):
-        data = _load_mapping(path, result)
-        if data is None:
-            continue
-        _require_slug(data, "decision_slug", path, result)
-        _require_non_empty_string(data, "decision_title", path, result)
-        _require_non_empty_string(data, "status", path, result)
-        _require_list(data, "related_sections", path, result, min_items=1)
-        _validate_path_list(data.get("supporting_surfaces"), root, path, "supporting_surfaces", result)
-        _require_non_empty_string(data, "decision", path, result)
-        _require_non_empty_string(data, "rationale", path, result)
 
 
 def _load_mapping(path: Path, result: ValidationResult) -> dict[str, Any] | None:

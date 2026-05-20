@@ -13,12 +13,12 @@ member_files:
   - path: library/sections/briefs/project_release_notes.md
     role: synthesis
     contribution: Captures compact current understanding for quick retrieval.
-  - path: library/sections/guides/project_release_notes.md
+  - path: library/sections/books/project_release_notes.md
     role: long_form
-    contribution: Expands the brief into a guide for maintainers and contributors.
+    contribution: Expands the brief into a book for maintainers and contributors.
 library_surfaces:
   - library/sections/index/project_release_notes.md
   - library/sections/briefs/project_release_notes.md
-  - library/sections/guides/project_release_notes.md
+  - library/sections/books/project_release_notes.md
 notes:
   - This source map proves the many-surface section pattern with one small public example.

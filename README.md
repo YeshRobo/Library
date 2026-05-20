@@ -11,9 +11,7 @@ The current milestone is `v0-file-library`: a file-based library structure, publ
 - `library/sections/index/` for routing pages
 - `library/sections/maps/` for source-to-section membership
 - `library/sections/briefs/` for compact synthesis
-- `library/sections/guides/` for optional long-form treatment
-- `library/reviews/` for proposed changes and disputes
-- `library/decisions/` for accepted direction
+- `library/sections/books/` for optional long-form treatment
 - `library/templates/` for creating new section surfaces
 
 ## Validate The Library
@@ -45,8 +43,8 @@ python3 -m pip install -e .
 section-library validate .
 ```
 
-## Build Direction
+## Build Path
 
-The file-based library model comes first. A read-only console and agent proposal workflows will be built after the library model is concrete and validated.
+The file-based source-to-book model comes first. A read-only console and agent-assisted book workflows will be built after the library model is concrete and validated.
 
 See `DESIGN.md` for the public design and open contribution questions.

@@ -9,9 +9,7 @@ Use:
 - `sections/index/` for section-routing pages
 - `sections/maps/` for gathered source membership by section
 - `sections/briefs/` for required compact section memory
-- `sections/guides/` for optional long-form section guides
-- `reviews/` for proposed changes, gaps, corrections, and disputes
-- `decisions/` for accepted direction after review
+- `sections/books/` for optional long-form section books
 - `templates/` for creating new surfaces
 
-The library is a staged memory layer between source material and accepted decisions.
+The library is a staged memory layer that turns source material into traceable books.

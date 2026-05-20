@@ -19,4 +19,4 @@ Write the current section-centered synthesis here.
 
 ## Next Use
 
-State how this brief should later inform a guide, review, decision, or implementation task.
+State how this brief should later inform a book draft or book maintenance task.

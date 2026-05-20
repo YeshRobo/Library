@@ -10,12 +10,11 @@ The current release notes are scattered across commit messages, issue comments, 
 
 - Release notes should separate user-visible changes from internal maintenance.
 - Each release note should preserve the source of the change when possible.
-- Contributors should be able to propose release note entries before they are accepted.
 - Maintainers need a compact brief before writing a final release announcement.
-- Long-form release guides are useful only for larger releases.
+- Long-form release books are useful only for larger releases or reusable release processes.
 
 ## Open Questions
 
 - What counts as a user-visible change?
-- Should contributors write release notes as part of pull requests?
-- How should rejected or postponed release notes be preserved?
+- Should contributors provide source notes as part of pull requests?
+- What source evidence should a release note book preserve?

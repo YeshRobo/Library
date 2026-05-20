@@ -10,6 +10,4 @@ Recommended target folders:
 - `section_index_template.md` -> `library/sections/index/<section_slug>.md`
 - `source_map_template.yaml` -> `library/sections/maps/<section_slug>.yaml`
 - `brief_template.md` -> `library/sections/briefs/<section_slug>.md`
-- `guide_template.md` -> `library/sections/guides/<section_slug>.md`
-- `review_template.yaml` -> `library/reviews/<review_slug>.yaml`
-- `decision_template.yaml` -> `library/decisions/<decision_slug>.yaml`
+- `book_template.md` -> `library/sections/books/<section_slug>.md`

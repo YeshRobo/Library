@@ -2,13 +2,13 @@
 
 Status: internal planning document
 Audience: coding agents and maintainers building Library
-Public status: do not commit or publish unless explicitly approved
+Public status: do not push unless explicitly approved
 
 ## Purpose
 
-This document turns the public design in `DESIGN.md` into an internal build plan for the first implementation of Library.
+This document turns the public design in `DESIGN.md` into an internal build plan for Library.
 
-Library should be built from the working lessons in UM2M while becoming a standalone public project. The implementation should use the local UM2M project repo and console repo as reference implementations, not as code or vocabulary to copy blindly.
+Library should be built from the working lessons in UM2M while becoming a standalone public project focused on creating books from source-grounded library material. The implementation should use the local UM2M project repo and console repo as reference implementations, not as code or vocabulary to copy blindly.
 
 ## Required Reference Repos
 
@@ -41,7 +41,7 @@ Primary console references:
 
 ## Reference Use Rules
 
-Use `um2m_oarm101_isaac_v1` as the source of the section-library model.
+Use `um2m_oarm101_isaac_v1` as the source of the staged library-to-book model.
 
 Use `um2m_console` as the source of the external console architecture.
 
@@ -51,7 +51,7 @@ Do not import from the source repos at runtime. Library must be able to run with
 
 Do not hard-code local absolute paths into public code, public docs, tests, or catalog files.
 
-Do not keep legacy project vocabulary in public surfaces unless explicitly discussed in `DESIGN.md` as origin context.
+Do not carry over Avyakta-only surfaces such as intent, direction, stewardship, gap handling, or accepted decisions. Library is about making books from organized library material.
 
 ## Public Vocabulary Mapping
 
@@ -65,31 +65,29 @@ Use this mapping when adapting UM2M-derived ideas:
 | topic index | Section Index |
 | topic map | Source Map |
 | topic summary | Brief |
-| topic book | Guide |
-| intent | Decision or Direction |
-| steward | Review |
-| UM2M connector | Library connector |
-| UM2M console | Library console |
+| topic book | Book |
 | workflow catalog | Workflow catalog |
 | run record | Run record |
 
-If a public-facing term feels unclear during implementation, prefer the clearest common-language term and record the decision in a review note or issue before expanding the pattern.
+If a public-facing term feels unclear during implementation, prefer the clearest common-language term and record the choice in this internal plan or an issue before expanding the pattern.
 
-## Non-Goals For The First Build
+## Non-Goals For The Current Direction
 
-Do not build the full console before the file model is stable.
+Do not build Avyakta intent or direction surfaces.
 
-Do not add autonomous writes.
+Do not build gap, steward, or review workflows as first-class Library concepts.
+
+Do not build decision surfaces.
+
+Do not build autonomous writes.
 
 Do not add external provider calls as the default path.
 
 Do not build multi-project support before one local Library project works.
 
-Do not preserve every UM2M layer or runtime concept.
-
 Do not migrate private UM2M content into public examples.
 
-Do not add broad abstractions before one end-to-end library slice exists.
+Do not add broad abstractions before one end-to-end source-to-book slice exists.
 
 ## Phase 0: Repo Hygiene
 
@@ -97,22 +95,21 @@ Goal: make the public repository safe to build on.
 
 Tasks:
 
-1. Decide whether this internal plan remains untracked or becomes private project management elsewhere.
-2. Add a public `README.md` only after the public design wording is stable.
-3. Add a license before inviting broad public reuse.
-4. Add `.gitignore` for Python, Node, build outputs, virtualenvs, and local run artifacts.
-5. Add basic project metadata after the first implementation language choices are finalized.
+1. Keep public files free of local absolute paths.
+2. Keep internal routing in internal docs unless explicitly approved for publication.
+3. Keep `.gitignore` current for Python, Node, build outputs, virtualenvs, and local run artifacts.
+4. Keep README and license public-friendly.
 
 Expected result:
 
-- Public repo still has a small, understandable surface.
-- Internal-only planning does not leak into public Git history.
+- Public repo has a small, understandable surface.
+- Internal-only planning does not leak into public Git history unless explicitly approved.
 
 ## Phase 1: File-Based Library Core
 
 Goal: implement the section-library structure without a console.
 
-Proposed public structure:
+Public structure:
 
 ```text
 library/
@@ -122,9 +119,7 @@ library/
     index/
     maps/
     briefs/
-    guides/
-  reviews/
-  decisions/
+    books/
   templates/
 ```
 
@@ -133,20 +128,15 @@ Tasks:
 1. Create neutral templates derived from the UM2M library templates.
 2. Rename template concepts using the public vocabulary mapping.
 3. Keep templates small and readable.
-4. Add one neutral example section with source, seed, index, map, brief, and optional guide.
+4. Add one neutral example section with source, seed, index, map, brief, and book.
 5. Add validation rules for required fields and broken file references.
-
-Reference patterns:
-
-- The staged component list in `layers/02_avyakta/library/library_build_rules.md`.
-- The compact working readme in `unmanifest/avyakta/library/README.md`.
-- The topic seed, index, map, summary, and book templates under `layers/02_avyakta/library/templates/`.
 
 Acceptance criteria:
 
 - A fresh reader can understand the library structure from the public files.
 - One example section can be validated end to end.
 - No public file requires UM2M-specific knowledge.
+- No public file introduces intent, direction, review, gap, or decision surfaces.
 
 ## Phase 2: Validation CLI
 
@@ -154,22 +144,17 @@ Goal: give maintainers and agents a simple local way to validate a Library repo.
 
 Recommended implementation:
 
-- Python package using `pydantic` and `PyYAML`, similar to the console backend dependency style.
-- CLI command such as `library validate` or `python -m library_cli validate`.
+- Python package using `PyYAML` for structured validation.
+- CLI command such as `section-library validate .`.
 
 Tasks:
 
-1. Define typed models for section seeds, indexes, source maps, briefs, guides, reviews, and decisions.
-2. Validate YAML shape for structured files.
-3. Validate Markdown files for required headings.
-4. Validate relative links and referenced paths.
+1. Validate YAML shape for section seeds and source maps.
+2. Validate Markdown files for required headings.
+3. Validate relative links and referenced paths.
+4. Reject absolute paths and parent-directory traversal.
 5. Report findings in a concise human-readable format.
 6. Add tests for valid and invalid example libraries.
-
-Reference patterns:
-
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/backend/registry/loader.py` for typed YAML loading and validation style.
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/backend/models/` for pydantic model organization.
 
 Acceptance criteria:
 
@@ -177,7 +162,26 @@ Acceptance criteria:
 - Validation fails clearly for missing required fields.
 - Validation refuses path traversal and absolute-path references in public library content.
 
-## Phase 3: Read-Only Library Console
+## Phase 3: Book Builder Workflows
+
+Goal: introduce agent-assisted workflows that help create books from mapped sources and briefs.
+
+Tasks:
+
+1. Define a workflow catalog structure for source-to-book work.
+2. Start with read-only or draft-only workflows.
+3. Add workflows for section discovery, source mapping, brief drafting, and book drafting.
+4. Define workflow metadata: inputs, target paths, read policy, draft output path, provider requirements, expected output.
+5. Add prompt files beside workflow definitions.
+6. Add run records for all agent-assisted attempts.
+
+Acceptance criteria:
+
+- A mock provider can run workflows without external API keys.
+- Outputs are saved as run records or drafts, not silently applied to book files.
+- Every workflow displays what it will read and what it may draft.
+
+## Phase 4: Read-Only Library Console
 
 Goal: create a read-only browser UI for exploring the file-based library.
 
@@ -205,19 +209,11 @@ Tasks:
 
 1. Create a FastAPI backend with health and catalog endpoints.
 2. Create a `LibraryRepoConnector` that reads only from the current Library repo.
-3. Create API endpoints for sections, sources, maps, briefs, guides, reviews, and decisions.
+3. Create API endpoints for sections, sources, maps, briefs, and books.
 4. Create a React/Vite frontend.
-5. Build first views: section list, section detail, source map, brief reader, guide reader.
+5. Build first views: section list, section detail, source map, brief reader, book reader.
 6. Show validation state in the UI.
 7. Keep all write flows disabled in this phase.
-
-Reference patterns:
-
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/backend/api/`
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/backend/connectors/base.py`
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/backend/connectors/um2m_repo.py`
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/frontend/src/App.tsx`
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/frontend/src/useConsoleState.ts`
 
 Acceptance criteria:
 
@@ -226,70 +222,6 @@ Acceptance criteria:
 - The console can browse the example section without provider keys.
 - No write endpoint mutates library content.
 
-## Phase 4: Workflow Catalog And Agent Contracts
-
-Goal: introduce agent-assisted workflows as data, not hardcoded behavior.
-
-Tasks:
-
-1. Define a catalog structure for Library workflows.
-2. Start with read-only or proposal-only workflows.
-3. Add workflows for section discovery, source mapping, brief drafting, and review support.
-4. Define workflow metadata: inputs, target paths, read policy, write policy, provider requirements, expected output.
-5. Add prompt files beside workflow definitions.
-6. Add run records for all agent-assisted attempts.
-
-Reference patterns:
-
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/catalog/projects/um2m_oarm101_isaac_v1/`
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/backend/engine/workflow_runner.py`
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/backend/engine/prompt_assembler.py`
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/backend/engine/run_records.py`
-- `/home/robo/UM2M_MULTIVERSE/repos/um2m_console/backend/providers/`
-
-Acceptance criteria:
-
-- The catalog loader discovers Library workflows from data files.
-- A mock provider can run workflows without external API keys.
-- Outputs are saved as run records, not silently applied to library files.
-- Every workflow displays what it will read and what it may propose.
-
-## Phase 5: Proposal-Only Writes
-
-Goal: let agents propose changes without directly mutating accepted library surfaces.
-
-Tasks:
-
-1. Define proposal files under `library/reviews/`.
-2. Add UI for reviewing proposed seeds, maps, briefs, and guides.
-3. Add explicit accept/reject flows.
-4. Preserve the source evidence used by each proposal.
-5. Keep accepted library updates separate from generated drafts.
-
-Acceptance criteria:
-
-- Agent output can create a review proposal.
-- No accepted section file changes without explicit human approval.
-- Run records link to proposals and source material.
-
-## Phase 6: Community Contribution Surface
-
-Goal: make the public project easy to improve.
-
-Tasks:
-
-1. Add public contribution guidance.
-2. Add issue templates for design questions, agent ideas, example libraries, and bugs.
-3. Add a clear governance note for how design changes are accepted.
-4. Add public examples of good and bad agent behavior.
-5. Add tests that contributors can run locally.
-
-Acceptance criteria:
-
-- A contributor can understand where to suggest design improvements.
-- A contributor can add a new example section and run validation.
-- A contributor can propose an agent workflow without needing private UM2M context.
-
 ## Agent Build Instructions
 
 A coding agent implementing this plan should follow this order:
@@ -297,8 +229,8 @@ A coding agent implementing this plan should follow this order:
 1. Read `DESIGN.md` in this repo.
 2. Read this internal plan.
 3. Read the UM2M library references listed above.
-4. Read the console references listed above.
-5. Build the smallest file-based library core before console work.
+4. Read the console references listed above only when console or workflow work begins.
+5. Build the smallest file-based source-to-book core before console work.
 6. Validate every public-facing name against the public vocabulary mapping.
 7. Keep source-derived patterns, but remove source-specific assumptions.
 8. Run tests or validation after each phase.
@@ -313,9 +245,9 @@ Public code must not depend on `/home/robo/UM2M_MULTIVERSE/repos/...` paths.
 
 Public examples must be neutral and free of private project content.
 
-Agent-generated content must be labeled with run metadata before it is considered for acceptance.
+Agent-generated content must be labeled with run metadata before it is considered for book inclusion.
 
-Write-capable flows must start as proposal-only.
+Write-capable flows must start as draft-only.
 
 The console must show path access before a workflow runs.
 
@@ -326,10 +258,9 @@ The backend must reject absolute paths, parent-directory traversal, and writes o
 Backend:
 
 - Python 3.11+
-- FastAPI
-- Pydantic
-- PyYAML
-- pytest
+- FastAPI for the future backend
+- PyYAML for structured validation
+- pytest or standard-library unittest for tests
 
 Frontend:
 
@@ -337,8 +268,6 @@ Frontend:
 - React
 - TypeScript
 - lucide-react
-
-This mirrors the working console stack closely enough to reuse lessons while staying understandable for public contributors.
 
 ## First Milestone Definition
 
@@ -348,6 +277,7 @@ Deliverables:
 
 - public templates
 - one neutral example library section
+- one complete book example
 - validation CLI
 - tests for the example and failure cases
 - public README
@@ -360,56 +290,6 @@ Not included:
 - agent write flows
 - multi-project support
 
-## Second Milestone Definition
-
-Milestone: `v1-readonly-console`
-
-Deliverables:
-
-- FastAPI read-only backend
-- React/Vite console
-- section browser
-- source map view
-- brief and guide readers
-- validation status display
-- mock data path for local demos
-
-Not included:
-
-- provider-backed agent runs
-- accepted write flows
-- public package distribution
-
-## Third Milestone Definition
-
-Milestone: `v2-agent-proposals`
-
-Deliverables:
-
-- workflow catalog
-- mock provider workflow execution
-- agent proposal records
-- review queue
-- run records
-- human accept/reject path
-
-Not included:
-
-- autonomous accepted writes
-- private-source migration
-- hardcoded UM2M runtime behavior
-
-## Open Internal Questions
-
-1. Should the public repo name stay `Library`, or should package names use `section-library` to avoid namespace collisions?
-2. Should templates use YAML plus Markdown, or Markdown with front matter?
-3. Should the first CLI be named `library`, `section-library`, or `libctl`?
-4. Should the console live at repo root under `backend/` and `frontend/`, or under `console/` first?
-5. Which neutral example domain should prove the first library slice?
-6. When should public agent prompts be introduced?
-7. Should provider adapters live in the main repo or a later optional package?
-8. What license should be used before asking the public to contribute?
-
 ## Immediate Next Action
 
-Build `v0-file-library` first. Do not start by copying the console. The console should serve the library model after the model is concrete.
+Keep `v0-file-library` focused on source-to-book validation. Do not add intent, direction, review, gap, or decision surfaces.

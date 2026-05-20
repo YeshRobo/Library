@@ -10,6 +10,6 @@ member_files:
 library_surfaces:
   - library/sections/index/section_slug.md
   - library/sections/briefs/section_slug.md
-# Add `library/sections/guides/section_slug.md` here only when a full guide exists for the section.
+# Add `library/sections/books/section_slug.md` here only when a full book exists for the section.
 notes:
   - The same file may appear in multiple source maps when it supports multiple sections.

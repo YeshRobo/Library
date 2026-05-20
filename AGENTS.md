@@ -29,8 +29,8 @@ Build in phases:
 1. File-based section-library core
 2. Validation CLI
 3. Read-only console
-4. Workflow catalog and agent contracts
-5. Proposal-only agent writes
+4. Workflow catalog and agent contracts for book creation
+5. Agent-assisted book drafting
 6. Public contribution surfaces
 
 Do not start with the full console. The file-based library model must work first.
@@ -45,9 +45,7 @@ Prefer clear public terms:
 - section index
 - source map
 - brief
-- guide
-- review
-- decision
+- book
 - Library console
 - run record
 
@@ -65,17 +63,17 @@ Before pushing, audit changed files for:
 - private project content
 - copied source material from reference repos
 - legacy vocabulary that should have been neutralized
-- write-capable agent behavior that bypasses review
+- write-capable agent behavior that bypasses human approval
 
 ## Agent And Automation Rules
 
 Agent-assisted workflows must preserve traceability.
 
-Agents may help discover sections, map sources, draft briefs, draft guides, prepare review proposals, and explain changes. Agent output must not become accepted library content without explicit human approval.
+Agents may help discover sections, map sources, draft briefs, draft books, and explain changes. Agent output must not become accepted library content without explicit human approval.
 
-Write-capable flows must begin as proposal-only. The backend must reject absolute paths, parent-directory traversal, and writes outside the repository root.
+Write-capable flows must begin as draft-only. The backend must reject absolute paths, parent-directory traversal, and writes outside the repository root.
 
-## Technical Direction
+## Technical Stack
 
 For the first implementation, prefer:
 

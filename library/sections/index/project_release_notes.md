@@ -3,7 +3,7 @@
 ## Section
 
 - Organize source-grounded knowledge about creating useful release notes.
-- Preserve the boundary between source notes, contributor proposals, maintainer briefs, and final release announcements.
+- Preserve the boundary between source notes, maintainer briefs, source maps, and long-form books.
 
 ## Source Entries
 
@@ -17,8 +17,8 @@
 
 - `library/sections/maps/project_release_notes.yaml`
 - `library/sections/briefs/project_release_notes.md`
-- `library/sections/guides/project_release_notes.md`
+- `library/sections/books/project_release_notes.md`
 
 ## Current Stage
 
-- `guided`
+- `booked`

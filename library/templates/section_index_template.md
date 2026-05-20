@@ -17,7 +17,7 @@
 
 - `library/sections/maps/section_slug.yaml`
 - `library/sections/briefs/section_slug.md`
-- `library/sections/guides/section_slug.md` when a full guide exists
+- `library/sections/books/section_slug.md` when a full book exists
 
 ## Current Stage
 
@@ -25,5 +25,4 @@
 - `indexed`
 - `mapped`
 - `briefed`
-- `guided`
-- `decision-linked`
+- `booked`
