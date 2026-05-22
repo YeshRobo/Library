@@ -1,21 +1,42 @@
-# Brief: Section Name
+# Brief: Target Name
 
-## Scope
+## Target Link
 
-State what this section brief is responsible for explaining.
+- `library/knowledge/04_targets/target_slug.md`
+
+## Current Answer
+
+Write the compact answer or synthesis for this target.
+
+## Key Points
+
+- Point 1
+- Point 2
+- Point 3
+
+## Evidence Base
+
+- `library/knowledge/05_maps/target_slug.yaml`
 
 ## Sources
 
-- `library/sources/example_source.md`
+- `library/knowledge/01_sources/example_source.md`
 
-## Current Understanding
-
-Write the current section-centered synthesis here.
-
-## Constraints And Tensions
+## Important Constraints
 
 - Record a durable constraint.
+
+## Tensions Or Conflicts
+
 - Record an unresolved tension if one exists.
+
+## Do Not Assume
+
+- Record what this brief does not prove.
+
+## Confidence
+
+`low`, `medium`, or `high`, with a short reason.
 
 ## Next Use
 

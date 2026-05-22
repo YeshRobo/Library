@@ -10,33 +10,50 @@ from typing import Any, Iterable
 import yaml
 
 
-VALID_SEED_STATUSES = {"discovered", "indexed", "mapped", "briefed", "booked"}
+VALID_SEED_STATUSES = {"weak", "promising", "strong", "accepted", "rejected", "merged"}
 VALID_MAP_STATUSES = {"draft", "stable", "needs_work"}
-VALID_STAGES = {"seeded", "indexed", "mapped", "briefed", "booked"}
+VALID_STAGES = {"proposed", "accepted", "active", "stable", "contested", "revised", "deprecated", "replaced"}
 
 REQUIRED_DIRECTORIES = (
-    "library/sources",
-    "library/sections/seeds",
-    "library/sections/index",
-    "library/sections/maps",
-    "library/sections/briefs",
-    "library/sections/books",
+    "library/knowledge/01_sources",
+    "library/knowledge/02_artifacts",
+    "library/knowledge/03_seeds",
+    "library/knowledge/04_targets",
+    "library/knowledge/05_maps",
+    "library/knowledge/06_briefs",
+    "library/knowledge/07_books",
+    "library/knowledge/08_feedback",
     "library/templates",
 )
 
 TEMPLATE_FILES = (
-    "library/templates/section_seed_template.yaml",
-    "library/templates/section_index_template.md",
-    "library/templates/source_map_template.yaml",
+    "library/templates/source_template.md",
+    "library/templates/artifact_template.md",
+    "library/templates/seed_template.yaml",
+    "library/templates/target_index_template.md",
+    "library/templates/map_template.yaml",
     "library/templates/brief_template.md",
     "library/templates/book_template.md",
+    "library/templates/feedback_template.md",
 )
 
 REQUIRED_MARKDOWN_HEADINGS = {
-    "library/sections/index": ("## Section", "## Source Entries", "## Library Surfaces", "## Current Stage"),
-    "library/sections/briefs": ("## Scope", "## Sources", "## Current Understanding", "## Constraints And Tensions", "## Next Use"),
-    "library/sections/books": (
-        "## Scope",
+    "library/knowledge/04_targets": ("## Target", "## Evidence Entries", "## Library Surfaces", "## Current Stage"),
+    "library/knowledge/06_briefs": (
+        "## Target Link",
+        "## Current Answer",
+        "## Key Points",
+        "## Evidence Base",
+        "## Sources",
+        "## Do Not Assume",
+        "## Confidence",
+        "## Next Use",
+    ),
+    "library/knowledge/07_books": (
+        "## Book Purpose",
+        "## Reader Or Agent Use Case",
+        "## Core Thesis",
+        "## Background",
         "## Reading Map",
         "## Sources",
         "## Questions",
@@ -44,6 +61,7 @@ REQUIRED_MARKDOWN_HEADINGS = {
         "## Evidence And Traceability",
         "## Constraints And Tensions",
         "## Open Questions",
+        "## Confidence And Limits",
         "## Next Use",
     ),
 }
@@ -86,52 +104,56 @@ def validate_repository(repo_root: Path | str) -> ValidationResult:
         if not (root / template).is_file():
             result.error(template, "required template is missing")
 
-    _validate_section_seeds(root, result)
-    _validate_source_maps(root, result)
-    _validate_markdown_sections(root, result)
+    _validate_seeds(root, result)
+    _validate_maps(root, result)
+    _validate_markdown_surfaces(root, result)
 
     return result
 
 
-def _validate_section_seeds(root: Path, result: ValidationResult) -> None:
-    for path in sorted((root / "library/sections/seeds").glob("*.yaml")):
+def _validate_seeds(root: Path, result: ValidationResult) -> None:
+    for path in sorted((root / "library/knowledge/03_seeds").glob("*.yaml")):
         data = _load_mapping(path, result)
         if data is None:
             continue
 
-        slug = _require_slug(data, "section_slug", path, result)
-        _require_non_empty_string(data, "section_title", path, result)
-        _require_non_empty_string(data, "section_brief", path, result)
+        slug = _require_slug(data, "target_slug", path, result)
+        _require_non_empty_string(data, "target_title", path, result)
+        _require_non_empty_string(data, "target_purpose", path, result)
         status = _require_non_empty_string(data, "status", path, result)
         if status and status not in VALID_SEED_STATUSES:
             result.error(path, f"status must be one of {sorted(VALID_SEED_STATUSES)}")
-        _require_list(data, "discovery_basis", path, result, min_items=1)
-        _require_list(data, "questions", path, result, min_items=1)
-        _require_list(data, "out_of_scope", path, result, min_items=1)
-        _validate_supporting_files(data.get("candidate_supporting_files"), root, path, result)
+        _require_non_empty_string(data, "seed_trigger", path, result)
+        _validate_origins(data.get("origins"), root, path, result)
+        _validate_supporting_paths(data.get("supporting_artifacts"), root, path, "supporting_artifacts", result)
+        _require_list(data, "possible_output_types", path, result, min_items=1)
+        _require_list(data, "proposed_scope", path, result, min_items=1)
+        _require_list(data, "exclusions", path, result, min_items=1)
+        _require_list(data, "open_questions", path, result, min_items=1)
         if slug and path.stem != slug:
-            result.error(path, "file name must match section_slug")
+            result.error(path, "file name must match target_slug")
 
 
-def _validate_source_maps(root: Path, result: ValidationResult) -> None:
-    for path in sorted((root / "library/sections/maps").glob("*.yaml")):
+def _validate_maps(root: Path, result: ValidationResult) -> None:
+    for path in sorted((root / "library/knowledge/05_maps").glob("*.yaml")):
         data = _load_mapping(path, result)
         if data is None:
             continue
 
-        slug = _require_slug(data, "section_slug", path, result)
-        _require_non_empty_string(data, "section_title", path, result)
+        slug = _require_slug(data, "target_slug", path, result)
+        _require_non_empty_string(data, "target_title", path, result)
         status = _require_non_empty_string(data, "status", path, result)
         if status and status not in VALID_MAP_STATUSES:
             result.error(path, f"status must be one of {sorted(VALID_MAP_STATUSES)}")
         _validate_path_list(data.get("source_entries"), root, path, "source_entries", result)
+        _validate_optional_path_list(data.get("artifact_entries"), root, path, "artifact_entries", result)
         _validate_member_files(data.get("member_files"), root, path, result)
         _validate_path_list(data.get("library_surfaces"), root, path, "library_surfaces", result)
         if slug and path.stem != slug:
-            result.error(path, "file name must match section_slug")
+            result.error(path, "file name must match target_slug")
 
 
-def _validate_markdown_sections(root: Path, result: ValidationResult) -> None:
+def _validate_markdown_surfaces(root: Path, result: ValidationResult) -> None:
     for directory, headings in REQUIRED_MARKDOWN_HEADINGS.items():
         for path in sorted((root / directory).glob("*.md")):
             text = path.read_text(encoding="utf-8")
@@ -179,19 +201,34 @@ def _require_list(data: dict[str, Any], key: str, path: Path, result: Validation
     return value
 
 
-def _validate_supporting_files(value: Any, root: Path, path: Path, result: ValidationResult) -> None:
+def _validate_origins(value: Any, root: Path, path: Path, result: ValidationResult) -> None:
     if not isinstance(value, list) or not value:
-        result.error(path, "candidate_supporting_files must be a non-empty list")
+        result.error(path, "origins must be a non-empty list")
         return
     for index, item in enumerate(value):
         if not isinstance(item, dict):
-            result.error(path, f"candidate_supporting_files[{index}] must be a mapping")
+            result.error(path, f"origins[{index}] must be a mapping")
+            continue
+        for key in ("type", "reason"):
+            value_for_key = item.get(key)
+            if not isinstance(value_for_key, str) or not value_for_key.strip():
+                result.error(path, f"origins[{index}].{key} must be a non-empty string")
+        _validate_optional_path_list(item.get("items"), root, path, f"origins[{index}].items", result, require_non_empty=True)
+
+
+def _validate_supporting_paths(value: Any, root: Path, path: Path, field: str, result: ValidationResult) -> None:
+    if not isinstance(value, list) or not value:
+        result.error(path, f"{field} must be a non-empty list")
+        return
+    for index, item in enumerate(value):
+        if not isinstance(item, dict):
+            result.error(path, f"{field}[{index}] must be a mapping")
             continue
         candidate = item.get("path")
         reason = item.get("reason")
-        _validate_existing_repo_path(candidate, root, path, f"candidate_supporting_files[{index}].path", result)
+        _validate_existing_repo_path(candidate, root, path, f"{field}[{index}].path", result)
         if not isinstance(reason, str) or not reason.strip():
-            result.error(path, f"candidate_supporting_files[{index}].reason must be a non-empty string")
+            result.error(path, f"{field}[{index}].reason must be a non-empty string")
 
 
 def _validate_member_files(value: Any, root: Path, path: Path, result: ValidationResult) -> None:
@@ -215,6 +252,27 @@ def _validate_path_list(value: Any, root: Path, path: Path, field: str, result: 
         return
     for index, item in enumerate(value):
         _validate_existing_repo_path(item, root, path, f"{field}[{index}]", result)
+
+
+def _validate_optional_path_list(
+    value: Any,
+    root: Path,
+    path: Path,
+    field: str,
+    result: ValidationResult,
+    *,
+    require_non_empty: bool = False,
+) -> None:
+    if value is None:
+        if require_non_empty:
+            result.error(path, f"{field} must be a non-empty list")
+        return
+    if not isinstance(value, list) or (require_non_empty and not value):
+        result.error(path, f"{field} must be a list")
+        return
+    for index, item in enumerate(value):
+        if isinstance(item, str) and _looks_like_repo_path(item):
+            _validate_existing_repo_path(item, root, path, f"{field}[{index}]", result)
 
 
 def _validate_inline_paths(text: str, root: Path, path: Path, result: ValidationResult) -> None:

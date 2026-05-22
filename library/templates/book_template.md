@@ -1,18 +1,29 @@
-# Book: Section Name
+# Book: Target Name
 
-## Scope
+## Book Purpose
 
-State what full book this section is responsible for explaining and why the topic warrants long-form treatment.
+State what need this book serves and why the target warrants long-form treatment.
+
+## Reader Or Agent Use Case
+
+State who should use this book and for what.
+
+## Core Thesis
+
+State the main current understanding.
+
+## Background
+
+Name important context for the reader.
 
 ## Reading Map
 
 - Name the brief that this book expands.
 - Name the core source files that anchor the book.
-- State the intended audience when that matters.
 
 ## Sources
 
-- `library/sources/example_source.md`
+- `library/knowledge/01_sources/example_source.md`
 
 ## Questions
 
@@ -21,7 +32,7 @@ State what full book this section is responsible for explaining and why the topi
 
 ## Detailed Synthesis
 
-Write the full long-form explanation here. This section may use subsections when needed, but it should remain one coherent book-level surface.
+Write the full long-form explanation here. This book may use subsections when needed, but it should remain one coherent target-level surface.
 
 ## Evidence And Traceability
 
@@ -30,8 +41,12 @@ Write the full long-form explanation here. This section may use subsections when
 
 ## Constraints And Tensions
 
-- Record the durable constraints that shape the section.
+- Record the durable constraints that shape the target.
 - Record tensions, competing interpretations, or unresolved problems.
+
+## Confidence And Limits
+
+- State what is strong, weak, contested, or speculative.
 
 ## Open Questions
 

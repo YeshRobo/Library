@@ -1,0 +1,32 @@
+target_slug: project_release_notes
+target_title: Project Release Notes
+target_purpose: Organize source-grounded release note knowledge into maintainable briefs and books.
+status: accepted
+seed_trigger: Release note planning notes identify a repeated need to gather, classify, and summarize change information before it becomes public announcement text.
+origins:
+  - type: source
+    items:
+      - library/knowledge/01_sources/project_release_notes_source.md
+    reason: The source notes and questions point toward a reusable release note knowledge target.
+supporting_artifacts:
+  - path: library/knowledge/01_sources/project_release_notes_source.md
+    reason: Captures the initial source notes and open questions for release note planning.
+possible_output_types:
+  - brief
+  - book
+proposed_scope:
+  - Preserve release note source evidence before final announcement writing.
+  - Provide maintainers with compact and long-form release note knowledge outputs.
+exclusions:
+  - Writing final release announcements for a specific software version.
+  - Replacing project changelogs or package metadata.
+open_questions:
+  - How should user-visible changes be separated from internal maintenance?
+  - What source evidence should a release note book preserve?
+created_by:
+  model: human
+  agent_role: maintainer
+  task: initial public example
+bias_lens: Small neutral example for validating the file-based Library model.
+notes:
+  - This example is intentionally neutral and small so it can validate the v1 knowledge-target model.

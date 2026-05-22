@@ -3,9 +3,9 @@ requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "section-library"
+name = "library-core"
 version = "0.1.0"
-description = "Source-grounded section library for traceable project knowledge."
+description = "Source-grounded knowledge library for traceable project knowledge."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
@@ -13,8 +13,14 @@ dependencies = [
   "PyYAML>=6.0",
 ]
 
+[project.optional-dependencies]
+console = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+]
+
 [project.scripts]
-section-library = "library_cli.cli:main"
+library-cli = "library_cli.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

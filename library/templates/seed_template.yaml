@@ -1,0 +1,29 @@
+target_slug: example_target
+target_title: Example Target
+target_purpose: One short statement of the knowledge need this seed proposes.
+status: promising
+seed_trigger: One short note describing why this target was proposed.
+origins:
+  - type: source
+    items:
+      - library/knowledge/01_sources/example_source.md
+    reason: Why these sources or artifacts point toward the same knowledge need.
+supporting_artifacts:
+  - path: library/knowledge/01_sources/example_source.md
+    reason: Why this source or artifact may support the target.
+possible_output_types:
+  - brief
+  - book
+proposed_scope:
+  - What this target should explain or consolidate.
+exclusions:
+  - What this target should not try to cover.
+open_questions:
+  - What needs clarification before accepting the target?
+created_by:
+  model: human
+  agent_role: maintainer
+  task: initial seed draft
+bias_lens: The perspective or need that shaped this seed.
+notes:
+  - Keep the seed short. It is a proposal, not the final explanation.

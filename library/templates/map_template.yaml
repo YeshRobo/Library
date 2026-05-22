@@ -1,0 +1,17 @@
+target_slug: target_slug
+target_title: Target Title
+status: draft
+source_entries:
+  - library/knowledge/01_sources/example_source.md
+artifact_entries:
+  - library/knowledge/02_artifacts/example_source/artifact_manifest.yaml
+member_files:
+  - path: library/knowledge/01_sources/example_source.md
+    role: primary
+    contribution: Explain why this file belongs to the target.
+library_surfaces:
+  - library/knowledge/04_targets/target_slug.md
+  - library/knowledge/06_briefs/target_slug.md
+# Add `library/knowledge/07_books/target_slug.md` here only when a full book exists for the target.
+notes:
+  - The same source or artifact may appear in multiple maps when it supports multiple targets.

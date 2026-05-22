@@ -21,19 +21,19 @@ class ValidatorTests(unittest.TestCase):
 
     def test_missing_required_seed_field_fails(self) -> None:
         with copied_repo() as repo:
-            seed_path = repo / "library/sections/seeds/project_release_notes.yaml"
+            seed_path = repo / "library/knowledge/03_seeds/project_release_notes.yaml"
             data = yaml.safe_load(seed_path.read_text(encoding="utf-8"))
-            data.pop("section_title")
+            data.pop("target_title")
             seed_path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
 
             result = validate_repository(repo)
 
         self.assertFalse(result.ok)
-        self.assertIn("section_title", summarize_findings(result.findings))
+        self.assertIn("target_title", summarize_findings(result.findings))
 
     def test_missing_referenced_file_fails(self) -> None:
         with copied_repo() as repo:
-            source_path = repo / "library/sources/project_release_notes_source.md"
+            source_path = repo / "library/knowledge/01_sources/project_release_notes_source.md"
             source_path.unlink()
 
             result = validate_repository(repo)
@@ -43,7 +43,7 @@ class ValidatorTests(unittest.TestCase):
 
     def test_path_traversal_fails(self) -> None:
         with copied_repo() as repo:
-            map_path = repo / "library/sections/maps/project_release_notes.yaml"
+            map_path = repo / "library/knowledge/05_maps/project_release_notes.yaml"
             data = yaml.safe_load(map_path.read_text(encoding="utf-8"))
             data["source_entries"] = ["../secret.md"]
             map_path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")

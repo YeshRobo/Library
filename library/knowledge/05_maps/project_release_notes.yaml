@@ -1,0 +1,25 @@
+target_slug: project_release_notes
+target_title: Project Release Notes
+status: stable
+source_entries:
+  - library/knowledge/01_sources/project_release_notes_source.md
+artifact_entries: []
+member_files:
+  - path: library/knowledge/01_sources/project_release_notes_source.md
+    role: primary
+    contribution: Provides the source notes, constraints, and open questions that ground the target.
+  - path: library/knowledge/04_targets/project_release_notes.md
+    role: routing
+    contribution: Defines the target identity and points readers to the library surfaces.
+  - path: library/knowledge/06_briefs/project_release_notes.md
+    role: synthesis
+    contribution: Captures compact current understanding for quick retrieval.
+  - path: library/knowledge/07_books/project_release_notes.md
+    role: long_form
+    contribution: Expands the brief into a book for maintainers and contributors.
+library_surfaces:
+  - library/knowledge/04_targets/project_release_notes.md
+  - library/knowledge/06_briefs/project_release_notes.md
+  - library/knowledge/07_books/project_release_notes.md
+notes:
+  - This map proves the many-surface target pattern with one small public example.

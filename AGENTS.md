@@ -1,6 +1,6 @@
 # Agent Runtime Instructions
 
-This repository is the implementation home for Library, a standalone public section-library system derived from lessons in UM2M.
+This repository is the implementation home for Library, a standalone public knowledge-library system derived from earlier source-grounded knowledge work.
 
 ## Read First
 
@@ -14,9 +14,9 @@ When working in this repo, read these files before implementing non-trivial chan
 
 ## Reference Repos
 
-Use the referenced UM2M and console repos as implementation references only.
+Use the referenced internal and console repos as implementation references only.
 
-- Use the UM2M project repo to understand the staged section-library model.
+- Use the internal project repo to understand the staged source-to-knowledge model.
 - Use the console repo to understand the data-driven backend/frontend architecture.
 - Do not import from those repos at runtime.
 - Do not copy their project-specific vocabulary into public Library surfaces.
@@ -26,7 +26,7 @@ Use the referenced UM2M and console repos as implementation references only.
 
 Build in phases:
 
-1. File-based section-library core
+1. File-based knowledge-library core
 2. Validation CLI
 3. Read-only console
 4. Workflow catalog and agent contracts for book creation
@@ -39,13 +39,16 @@ Do not start with the full console. The file-based library model must work first
 
 Prefer clear public terms:
 
-- section library
+- knowledge library
 - source
-- section seed
-- section index
-- source map
+- artifact
+- seed
+- knowledge target
+- target index
+- map
 - brief
 - book
+- feedback
 - Library console
 - run record
 
@@ -69,7 +72,7 @@ Before pushing, audit changed files for:
 
 Agent-assisted workflows must preserve traceability.
 
-Agents may help discover sections, map sources, draft briefs, draft books, and explain changes. Agent output must not become accepted library content without explicit human approval.
+Agents may help create artifacts, discover targets, map sources, draft briefs, draft books, record feedback, and explain changes. Agent output must not become accepted library content without explicit human approval.
 
 Write-capable flows must begin as draft-only. The backend must reject absolute paths, parent-directory traversal, and writes outside the repository root.
 

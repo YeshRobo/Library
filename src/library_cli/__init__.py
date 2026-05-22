@@ -1,4 +1,4 @@
-"""Validation tools for Library section-library repositories."""
+"""Validation tools for Library knowledge repositories."""
 
 __all__ = ["__version__"]
 

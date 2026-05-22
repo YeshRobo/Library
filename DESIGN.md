@@ -2,17 +2,17 @@
 
 ## Purpose
 
-Library is a source-grounded section library for turning raw project material into organized, traceable books.
+Library is a source-grounded knowledge library for turning scattered project material into useful, traceable, revisable knowledge outputs.
 
-The project starts with one simple idea: useful books should not appear from nowhere. They should grow from sources, section seeds, source maps, and compact briefs before becoming long-form readable knowledge.
+The project starts with one simple idea: useful knowledge should not appear from nowhere. A brief, book, guide, reference page, or agent packet should grow from sources, artifacts, seeds, targets, maps, compact synthesis, and feedback.
 
-This repository begins with a file-based model on purpose. The first public goal is to make the source-to-book workflow clear before the console or agent workflows become larger.
+This repository begins with a file-based model on purpose. The first public goal is to make the source-to-output workflow clear before the console or agent workflows become larger.
 
 ## Project Origin
 
-Library will be built from lessons learned in UM2M, an earlier internal project that explored source-grounded knowledge organization, staged synthesis, agent-assisted workflows, and console-driven navigation.
+Library is built from lessons learned in earlier internal work that explored source-grounded knowledge organization, staged synthesis, agent-assisted workflows, and console-driven navigation.
 
-The public project should not require users to understand UM2M. UM2M is the starting prototype and learning source; Library is the standalone community version. Public contributors should feel free to simplify, rename, challenge, or replace inherited ideas when a clearer source-to-book design emerges.
+The public project should not require users to understand that earlier work. Library is the standalone community version. Public contributors should feel free to simplify, rename, challenge, or replace inherited ideas when a clearer source-to-knowledge design emerges.
 
 ## Design Goals
 
@@ -21,7 +21,7 @@ Library should be:
 - easy to understand without special terminology
 - useful for small projects and large knowledge bases
 - source-grounded, with clear traceability back to original material
-- focused on producing readable books from organized library material
+- focused on producing need-based knowledge outputs from organized library material
 - friendly to human readers and AI-assisted workflows
 - structured enough to support automation
 - flexible enough to support different domains
@@ -34,32 +34,37 @@ Library should avoid:
 - binding claims that cannot be traced to source material
 - forcing every project into the same folder layout before the pattern is proven
 - turning early notes directly into long-form books
+- treating generated content as accepted knowledge without review
 
 ## Core Idea
 
 Library organizes knowledge through a staged flow:
 
 ```text
-sources -> section seeds -> section indexes -> source maps -> briefs -> books
+sources -> artifacts -> seeds -> targets -> maps -> briefs -> books -> feedback
 ```
 
 Each stage has a different job.
 
 `sources` preserve raw or lightly processed material.
 
-`section seeds` identify topics that may deserve organized treatment.
+`artifacts` structure source-derived material so later work has compact evidence, questions, tags, and limitations.
 
-`section indexes` route readers to the surfaces for one section.
+`seeds` propose possible knowledge targets based on a need, pattern, question, conflict, task, or perspective.
 
-`source maps` gather the files that support a section and explain why each file belongs.
+`targets` register accepted knowledge needs and route readers to the surfaces for one target.
 
-`briefs` summarize what is currently understood about a section.
+`maps` gather the files that support a target and explain why each file belongs.
 
-`books` expand mature sections into long-form, readable knowledge.
+`briefs` summarize what is currently understood about a target.
 
-The stages are deliberately separate. A source is not a book. A seed is not a brief. A brief is not automatically a complete book. This separation keeps knowledge traceable and lets books mature from grounded material.
+`books` expand mature targets into long-form, readable knowledge.
 
-## Proposed Repository Shape
+`feedback` records use, failure, contradiction, confidence changes, and revision triggers.
+
+The stages are deliberately separate. A source is not an artifact. An artifact is not a seed. A seed is not an accepted target. A brief is not automatically a complete book. This separation keeps knowledge traceable and lets outputs mature from grounded material.
+
+## Repository Shape
 
 The file-based core uses this shape:
 
@@ -67,111 +72,156 @@ The file-based core uses this shape:
 Library/
   DESIGN.md
   library/
-    sources/
-    sections/
-      seeds/
-      index/
-      maps/
-      briefs/
-      books/
+    knowledge/
+      01_sources/
+      02_artifacts/
+      03_seeds/
+      04_targets/
+      05_maps/
+      06_briefs/
+      07_books/
+      08_feedback/
     templates/
   src/
   tests/
 ```
 
-Future console and agent code should serve this model rather than replace it.
+The numeric prefixes keep the folders sorted in the source-to-knowledge flow.
 
-## Library Components
+Future console and agent code should serve this file model rather than replace it.
+
+## Knowledge Components
 
 ### Sources
 
 Sources are the raw inputs to the library. They may include notes, reports, transcripts, issue summaries, research excerpts, design sketches, audit results, or other source material.
 
-A source should preserve context rather than rewrite it too aggressively. The goal is to keep later briefs and books traceable.
+A source should preserve context rather than rewrite it too aggressively. The goal is to keep later briefs, books, and other outputs traceable.
 
-### Section Seeds
+### Artifacts
 
-A section seed proposes that a topic deserves organized treatment.
+Artifacts are source-derived draft surfaces created from sources.
+
+A good artifact set may include:
+
+- a source card
+- a source summary
+- an evidence ledger
+- questions raised by the source
+- candidate tags
+- an artifact manifest
+
+Artifacts prepare source material for target discovery, mapping, briefs, and books. They are not accepted knowledge by themselves.
+
+### Seeds
+
+A seed proposes that a knowledge target may be worth creating.
 
 A good seed answers:
 
-- What is the topic?
-- Why does it deserve a section?
-- Which source files support it?
-- What questions should the section answer?
+- What knowledge target may be useful?
+- What need, pattern, question, conflict, or task triggered the proposal?
+- Which sources or artifacts appear to support it?
+- What output type may be useful?
 - What should remain out of scope?
 
-Seeds are intentionally lightweight. They help avoid creating a full section before there is enough evidence that the topic matters.
+Seeds are intentionally lightweight. They help avoid creating a full target before there is enough evidence that the target matters.
 
-### Section Index
+### Targets
 
-A section index is the routing page for a topic.
+A target is an accepted need, question, pattern, or output area that Library decides is worth organizing around.
 
-A good index answers:
+A good target index answers:
 
-- What is this section about?
-- Where did the section come from?
-- Which source maps, briefs, books, and source files belong to it?
-- What is the current maturity level of the section?
+- What need does this target serve?
+- Which seeds created or influenced it?
+- What is the current maturity stage?
+- Which maps, briefs, books, feedback records, and source files belong to it?
+- Where should a reader or tool go next?
 
-The index should be fast to scan. It should help humans and tools find the right material without reading the whole library.
+The target index should be fast to scan. Its purpose is navigation and identity, not deep synthesis.
 
-### Source Maps
+### Maps
 
-A source map gathers all files related to a section and explains why each file belongs.
+A map gathers evidence related to a target and explains why each file belongs.
 
-A good source map answers:
+A good map answers:
 
-- Which sources support this section?
-- What does each source contribute?
+- Which sources and artifacts support this target?
+- What does each source or artifact contribute?
 - Which files are primary evidence?
 - Which files are secondary context?
-- Which files are related but out of scope?
+- Which files are conflicting, missing, or out of scope?
 
-A source may appear in more than one section when justified. The map should make that relationship visible instead of hiding it.
+A source or artifact may appear in more than one map when justified. The map should make that relationship visible instead of hiding it.
 
 ### Briefs
 
-A brief is the required compact synthesis for a section.
+A brief is the required compact synthesis for a target.
 
 A good brief answers:
 
 - What do we currently understand?
 - What evidence supports that understanding?
-- What constraints or tensions matter?
+- What constraints, tensions, or conflicts matter?
 - What remains uncertain?
-- What should a reader consult next?
+- What should a reader or agent consult next?
 
 Briefs should be short enough to retrieve quickly and rich enough to preserve important distinctions.
 
 ### Books
 
-A book is an optional long-form treatment of a mature section.
+A book is an optional long-form treatment of a mature target.
 
 A good book answers:
 
-- What is the complete topic narrative?
-- How do the sources relate to each other?
+- What is the complete readable treatment of this target?
+- How do the sources, artifacts, map, and brief relate to each other?
 - What patterns, constraints, and tradeoffs appear?
-- What does the reader need to know before acting on this topic?
+- What does the reader need to know before acting on this target?
 - What questions remain open?
 
 Books are deep knowledge surfaces. They should remain source-grounded and should clearly mark inference when the source material does not directly state a claim.
+
+### Feedback
+
+Feedback records how a knowledge output performs when it is used.
+
+A good feedback record answers:
+
+- Which target or output was used?
+- What task or need used it?
+- Did it help, fail, mislead, or get contradicted?
+- What revision is needed?
+- How should confidence change?
+
+Feedback should not silently rewrite accepted knowledge. It should point to the target, brief, book, or map that needs review.
+
+## Confidence Model
+
+Library treats confidence as provisional.
+
+Confidence can increase through source support, source diversity, successful reuse, independent rediscovery by different agents, low contradiction level, and successful reality checks.
+
+Confidence can decrease through contradicted evidence, failed use, stale source material, unsupported synthesis, or stronger replacement outputs.
+
+A book in Library means: this is the current best consolidated understanding for this target, based on available sources, evidence, use, and revision history. It does not mean final truth.
 
 ## Console Concept
 
 Library should eventually include its own console.
 
-The console should be a practical interface for browsing, querying, and building section books. It should not replace the file-based structure. The files remain the durable project surface; the console makes that surface easier to use.
+The console should be a practical interface for browsing, querying, and building knowledge targets. It should not replace the file-based structure. The files remain the durable project surface; the console makes that surface easier to use.
 
 The console may include:
 
-- a section browser
+- a target browser
 - source traceability views
-- brief and book readers
+- map, brief, and book readers
+- feedback and confidence views
 - maturity indicators
 - search and query tools
-- provider adapters for AI-assisted book workflows
+- provider adapters for AI-assisted workflows
 - run records for generated outputs
 
 The console should be data-driven. Project-specific behavior should live in configuration, not hardcoded assumptions.
@@ -182,30 +232,34 @@ Automation should support the library without taking ownership away from maintai
 
 Possible automation:
 
-- propose section seeds from new source material
-- detect source files that may belong to existing sections
-- draft source maps
-- draft briefs from mapped sources
+- create artifacts from new source material
+- propose seeds from artifacts, questions, tasks, or contradictions
+- detect source files that may belong to existing targets
+- draft maps
+- draft briefs from mapped sources and artifacts
 - expand mature briefs into book drafts
 - compare briefs and books against source evidence
-- identify stale or unsupported book claims
+- identify stale or unsupported claims
+- create feedback records after use
 - generate run records for AI-assisted work
 
 Automation should always preserve traceability. If a tool writes or proposes content, readers should be able to see what source material was used and what generation state the output is in.
 
 ## Agent Improvement Model
 
-Library should invite contributors to improve the agents that help maintain, query, and extend the source-to-book workflow.
+Library should invite contributors to improve the agents that help maintain, query, and extend the source-to-knowledge workflow.
 
 Agents may eventually help with:
 
-- discovering candidate sections from source material
-- building and checking source maps
+- creating source artifacts
+- discovering candidate targets
+- building and checking maps
 - drafting briefs
 - drafting books
+- recording feedback
 - finding missing evidence
 - identifying unclear or unsupported claims
-- explaining why a book changed over time
+- explaining why an output changed over time
 - helping maintainers navigate the console
 
 Agent contributions should be judged by usefulness, traceability, clarity, and safety. An agent should make the library easier to understand and improve; it should not hide uncertainty, invent unsupported claims, or apply generated books without human approval.
@@ -214,13 +268,13 @@ Useful agent contributions may include prompt designs, workflow definitions, eva
 
 ## Maturity Model
 
-Sections may move through maturity levels:
+Targets may move through lifecycle stages:
 
 ```text
-seeded -> indexed -> mapped -> briefed -> booked
+proposed -> accepted -> active -> stable -> contested -> revised -> replaced/deprecated
 ```
 
-A section does not need to reach every level. Some topics may only need a seed and a brief. Others may justify a full book.
+A target does not need to reach every stage. Some targets may only need a seed and a brief. Others may justify a full book.
 
 The maturity model should be useful, not ceremonial.
 
@@ -243,31 +297,31 @@ Useful contributions may include:
 - documentation edits
 - concerns about complexity
 
-Contributors should feel welcome to challenge the design. The goal is not to preserve the first draft. The goal is to build a practical public library system that other people would actually use to make books from source-grounded knowledge.
+Contributors should feel welcome to challenge the design. The goal is not to preserve the first draft. The goal is to build a practical public library system that other people would actually use to make source-grounded knowledge.
 
 ## Questions For Contributors
 
-1. Is "section library" the clearest name for this pattern, or should the project use another term?
+1. Is "knowledge target" the clearest name for this pattern, or should the project use another term?
 2. Are the proposed stages too many, too few, or just enough?
 3. Should `briefs` and `books` be separate, or should they be one document type with different lengths?
 4. What is the smallest useful version of this system?
 5. What should the first console view be?
 6. Should the console be included in this repo from the start, or should it remain a later package?
 7. What file formats should be supported first: Markdown, YAML, JSON, or something else?
-8. How should AI-generated book content be labeled?
-9. What makes a section mature enough to become a book?
+8. How should AI-generated content be labeled?
+9. What makes a target mature enough to become a book?
 10. What license and governance model would best support public reuse and contribution?
-11. Which agent roles would be most useful first: section discovery, source mapping, brief drafting, book drafting, or console navigation?
+11. Which agent roles would be most useful first: source artifact, seed discovery, map drafting, brief drafting, book drafting, feedback recording, or console navigation?
 12. What tests should an agent pass before its book output is trusted by maintainers?
 
 ## First Implementation Proposal
 
 The first implementation should stay small:
 
-1. Define templates for seeds, indexes, maps, briefs, and books.
-2. Add one complete example library with neutral sample content.
+1. Define templates for sources, artifacts, seeds, targets, maps, briefs, books, and feedback.
+2. Add one complete example target with neutral sample content.
 3. Add validation for required fields and broken links.
-4. Build a read-only console that can browse the example library.
+4. Build a read-only console that can browse the example target.
 5. Add agent-assisted book drafting only after the file model is clear.
 
 This order keeps the project understandable while giving contributors something concrete to test.

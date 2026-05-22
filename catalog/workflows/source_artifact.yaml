@@ -1,0 +1,27 @@
+workflow_id: source_artifact
+name: Source Artifact Agent
+agent_module: library_agents.source_artifact
+mode: draft_only
+prompt_path: catalog/prompts/source_artifact.md
+inputs:
+  - name: source_path
+    type: repo_path
+    required: true
+read_policy:
+  allowed_roots:
+    - library/knowledge/01_sources
+    - library/knowledge/02_artifacts
+  required_files: []
+write_policy:
+  draft_root: library/knowledge/02_artifacts
+  allowed_extensions:
+    - .yaml
+    - .md
+run_record:
+  root: runs
+  required: true
+provider:
+  default: mock
+expected_output:
+  type: source_artifact
+  validator: source_artifact
