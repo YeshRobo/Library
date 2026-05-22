@@ -172,6 +172,8 @@ Implement agents in this order.
 
 ### 1. Source Artifact Agent
 
+Detailed design lives in `INTERNAL_SOURCE_ARTIFACT_AGENT_DESIGN.md`.
+
 Purpose: create structured source-derived artifacts from raw or lightly processed source files.
 
 Reads:
