@@ -76,7 +76,13 @@ def write_artifacts(
 
 def _render_source_summary(summary: dict[str, Any]) -> str:
     points = "\n".join(f"- {point}" for point in summary["notable_points"])
-    return f"# Source Summary: {summary['title']}\n\n## Summary\n\n{summary['summary']}\n\n## Notable Points\n\n{points}\n"
+    return (
+        f"# Source Summary: {summary['title']}\n\n"
+        f"## Simple Summary\n\n{summary['summary']}\n\n"
+        f"## Summary Basis\n\n{points}\n\n"
+        "## Not Claims\n\n"
+        "This summary does not decide importance, truth, target membership, or downstream use.\n"
+    )
 
 
 def _render_list_markdown(title: str, values: list[str]) -> str:

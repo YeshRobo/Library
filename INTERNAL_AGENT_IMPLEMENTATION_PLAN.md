@@ -174,7 +174,7 @@ Implement agents in this order.
 
 Detailed design lives in `INTERNAL_SOURCE_ARTIFACT_AGENT_DESIGN.md`.
 
-Purpose: create structured source-derived artifacts from raw or lightly processed source files.
+Purpose: create compact, structured source-derived artifacts from raw or lightly processed source files so later agents can load multiple artifacts in one model context.
 
 Reads:
 

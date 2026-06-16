@@ -48,7 +48,7 @@ Each stage has a different job.
 
 `sources` preserve raw or lightly processed material.
 
-`artifacts` structure source-derived material so later work has compact evidence, questions, tags, and limitations.
+`artifacts` compress source-derived material into compact, traceable packets so later work can compare multiple sources in one working context.
 
 `seeds` propose possible knowledge targets based on a need, pattern, question, conflict, task, or perspective.
 
@@ -100,7 +100,9 @@ A source should preserve context rather than rewrite it too aggressively. The go
 
 ### Artifacts
 
-Artifacts are source-derived draft surfaces created from sources.
+Artifacts are compact source-derived draft surfaces created from sources.
+
+The main purpose of an artifact is to reduce the size of a source so humans and language models can load multiple artifacts together while still tracing useful claims back to the original source. An artifact is a context packet, not a replacement for the source and not accepted knowledge by itself.
 
 A good artifact set may include:
 
@@ -111,7 +113,7 @@ A good artifact set may include:
 - candidate tags
 - an artifact manifest
 
-Artifacts prepare source material for target discovery, mapping, briefs, and books. They are not accepted knowledge by themselves.
+Artifacts prepare source material for target discovery, mapping, briefs, and books. They should stay smaller than the source, preserve provenance, and avoid becoming long summaries or hidden synthesis.
 
 ### Seeds
 

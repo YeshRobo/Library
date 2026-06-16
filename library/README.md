@@ -5,7 +5,7 @@ This root holds source-grounded knowledge targets and their source-to-book pipel
 Use:
 
 - `knowledge/01_sources/` for raw or lightly processed material
-- `knowledge/02_artifacts/` for source-derived draft artifacts
+- `knowledge/02_artifacts/` for compact source-derived draft artifacts
 - `knowledge/03_seeds/` for proposed knowledge targets
 - `knowledge/04_targets/` for accepted target-routing pages
 - `knowledge/05_maps/` for gathered source and artifact membership by target

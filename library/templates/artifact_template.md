@@ -6,17 +6,19 @@
 
 ## Artifact Purpose
 
-Explain why this artifact exists and what source it represents.
+Explain why this compact context packet exists and what source it represents.
 
 ## Source Summary
 
-Summarize the source in compact, reusable form.
+Summarize the source in compact, reusable form so multiple artifacts can fit in one model context.
 
 ## Key Extracted Points
 
 - Point 1
 - Point 2
 - Point 3
+
+Keep this list short. Prefer source pointers and compact excerpts over copying full sections.
 
 ## Important Terms Or Entities
 
@@ -36,7 +38,7 @@ Record internal tensions or conflicts with other known material.
 
 ## Evidence Notes
 
-Record specific details that may matter later.
+Record only the specific source details needed for orientation and later traceability.
 
 ## Confidence And Limitations
 

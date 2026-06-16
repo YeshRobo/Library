@@ -46,7 +46,7 @@ class MockSourceArtifactProvider:
         ]
         questions = [text for _, text in lines if text.endswith("?")][:6]
         if not questions:
-            questions = ["What target could use this source?", "What evidence should later synthesis preserve?"]
+            questions = ["No explicit questions found in this source."]
 
         tags = _candidate_tags(packet.source_slug, lines)
         summary_lines = [text for _, text in lines[:4]]
@@ -64,7 +64,7 @@ class MockSourceArtifactProvider:
             "source_summary": {
                 "title": title,
                 "summary": summary,
-                "notable_points": [text for _, text in lines[:5]] or ["No notable points extracted."],
+                "notable_points": [text for _, text in lines[:5]] or ["No summary basis lines extracted."],
             },
             "evidence_ledger": {
                 "source_path": packet.source_path,

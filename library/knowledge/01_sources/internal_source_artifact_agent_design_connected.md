@@ -8,13 +8,23 @@ Public status: do not push unless explicitly approved
 
 This document defines the design of the Library Source Artifact Agent.
 
-The agent is the first automation step in the target-centered Library flow:
+The agent should not be understood as an independent knowledge worker. It is a pipeline bridge inside the target-centered Library flow:
 
 ```text
-sources -> artifacts -> seeds -> targets -> maps -> briefs -> books -> feedback
+01_sources -> Source Artifact Agent -> 02_artifacts -> 03_seeds -> 04_targets -> 05_maps -> 06_briefs -> 07_books -> 08_feedback
 ```
 
-Its job is narrow: turn one source file into one compact, durable source artifact packet that later agents and maintainers can inspect, cite, and reuse. The artifact should reduce source size so multiple artifacts can fit in one language-model context. It does not create seeds, target indexes, maps, briefs, books, or feedback records.
+Its job is narrow: take one preserved source file from `library/knowledge/01_sources/` and turn it into one compact, durable source artifact packet under `library/knowledge/02_artifacts/`. The main purpose of that packet is context compression: later LLM agents should be able to load many artifact packets together without context overload, then compare them to propose seeds.
+
+The artifact is therefore not mainly a human summary. It is a source-level context unit for downstream Library agents. It keeps enough identity, orientation, evidence pointers, and limits for later agents to inspect, cite, compare, and reuse the source without loading every raw source file at once.
+
+The agent does not decide what knowledge target should exist. It does not create seeds, target indexes, maps, briefs, books, or feedback records. It prepares the source so Seed Discovery and later steps can work over many smaller, traceable, source-grounded packets instead of repeatedly rereading raw files.
+
+In short:
+
+```text
+Source Artifact Agent = one-source compression into multi-artifact LLM context units
+```
 
 ## Reference Inputs
 
@@ -25,6 +35,75 @@ This design is based on:
 - the current Library implementation under `src/library_agents/source_artifact_agent/`
 
 The reference repo is an implementation reference only. Library should keep neutral public vocabulary, avoid private framework terms in public surfaces, and avoid importing from the reference repo at runtime.
+
+
+## Pipeline Position
+
+The Source Artifact Agent sits between raw source preservation and downstream knowledge discovery. Its immediate downstream consumer is usually not a human reader; it is a seed-building or mapping LLM that needs to load many source representations together.
+
+It receives:
+
+- one selected source file from `01_sources`
+- workflow rules from the catalog
+- the source artifact prompt
+- optional existing artifact packet state for the same source
+
+It emits:
+
+- one draft artifact packet in `02_artifacts`
+- one artifact manifest that preserves source identity and provenance
+- one run record that records what was read, generated, validated, and written
+
+It hands off to:
+
+- Seed Discovery, which loads many artifact packets into one LLM context and proposes seeds from patterns, questions, needs, contradictions, or overlooked fragments
+- Target acceptance, which decides which seeds become registered knowledge targets
+- Map agents, which connect accepted targets to supporting artifacts and sources
+- Brief and Book agents, which synthesize target-level outputs from maps and evidence
+- Feedback workflows, which later mark artifacts and outputs as useful, stale, misleading, contradicted, or in need of revision
+
+The agent should therefore be designed around downstream context packing, not autonomy. Its output must be compact enough for multi-artifact loading, stable enough for later steps to consume, and modest enough that it does not pre-decide the work those later steps own.
+
+## Step Boundary Table
+
+| Library step | Receives | Produces | Must not do |
+| --- | --- | --- | --- |
+| Sources | imported or raw material | preserved source files | overwrite evidence with interpretation |
+| Source Artifact Agent | one source file | one draft artifact packet | create seeds, targets, maps, briefs, books, or truth claims |
+| Seed Discovery | many artifacts, user needs, agent needs, contradictions, patterns | proposed seeds | treat a seed as accepted knowledge |
+| Targets | accepted seeds | stable target identity/index | pretend one source equals one final output |
+| Maps | target plus relevant artifacts/sources | target-level evidence map | synthesize final prose as if evidence is settled |
+| Briefs | target map and evidence | compact usable answer | claim final truth |
+| Books | mature target, maps, briefs, feedback | long-form synthesis | become unrevisable doctrine |
+| Feedback | use results, failures, contradictions, revisions | confidence and revision signals | erase provenance |
+
+This boundary table should guide implementation decisions. When in doubt, the Source Artifact Agent should preserve and compress source-level evidence, then stop.
+
+## Primary Design Purpose: Multi-Artifact Context Loading
+
+The most important purpose of the artifact layer is to let an LLM reason over many sources without loading all raw sources into context.
+
+A raw source may be too long, messy, repetitive, or uneven to load alongside many other raw sources. An artifact packet should act as a compact source proxy. It should preserve the source identity and enough orientation for a downstream agent to decide whether the raw source needs to be reopened.
+
+The Seed Discovery Agent should be able to load a bundle like this:
+
+```text
+artifact_a + artifact_b + artifact_c + artifact_d + artifact_e + user/agent need
+```
+
+and ask:
+
+```text
+What seeds might emerge from this collection of source-grounded packets?
+```
+
+That means artifact quality should be judged by a practical downstream question:
+
+```text
+Can many artifacts fit together in context while still giving a seed agent enough source-grounded signal to notice possible knowledge targets?
+```
+
+This is different from asking whether the artifact fully explains the source. It should not. A good artifact is small enough to travel with many other artifacts and grounded enough to point back to the raw source when deeper inspection is needed.
 
 ## Core Design Rule
 
@@ -63,7 +142,9 @@ Future versions may add optional files such as `terms_entities.yaml`, `possible_
 
 ## Why The Agent Exists
 
-Raw sources are often too long, messy, or uneven for downstream agents to load repeatedly. The artifact packet is a compression layer: it reduces each source into a smaller, traceable context packet so later agents can load multiple artifacts together without pretending the artifacts are accepted knowledge.
+Raw sources are often too long, messy, or uneven for downstream agents to load repeatedly, especially when seed discovery needs to compare many sources at once. The artifact packet is the first reusable interface between source preservation and later knowledge work. It reduces each source into a smaller, traceable context packet so later LLM agents can load multiple artifacts together without context overload and without pretending the artifacts are accepted knowledge.
+
+The agent exists because seed-building and mapping workflows need source-grounded inputs that are smaller than raw sources but more reliable than loose summaries. It should make a source easier to recognize, retrieve, compare, cite, and revisit while preserving enough compact signal for cross-artifact pattern discovery.
 
 The v0 artifact packet should answer only low-judgment questions:
 
@@ -74,15 +155,30 @@ The v0 artifact packet should answer only low-judgment questions:
 - Which explicit questions already appear in the source?
 - What did the agent avoid inferring?
 
-Artifacts reduce repeated source reading and model-context load, but they do not replace sources. Downstream maps, briefs, and books should still be able to trace claims back through artifact evidence to the original source path and source hash.
+Artifacts reduce repeated source reading and model-context load, but they do not replace sources. Downstream seeds, maps, briefs, and books should still be able to trace claims back through artifact evidence to the original source path and source hash.
 
-The artifact should usually be much smaller than the source. If an artifact starts copying most of the source, it has failed its main job.
+The artifact should usually be much smaller than the source. If an artifact starts copying most of the source, it has failed its main job. The success condition is not "maximum detail preserved"; the success condition is "enough grounded signal preserved for many artifacts to be loaded together and used for seed discovery."
+
+### Handoff Contract
+
+The artifact packet is not an end product. It is a handoff object.
+
+For downstream agents, it should provide:
+
+- enough source identity to find and verify the raw source
+- enough orientation to decide whether the source may be relevant
+- enough compact signal for cross-artifact seed discovery
+- enough line-referenced evidence to support first-pass inspection
+- enough limitations to prevent overconfident downstream use
+- enough manifest metadata to detect stale, invalid, duplicate, or replaced packets
+
+For upstream source preservation, it should never mutate, rewrite, or replace the original source. The source remains the authority. The artifact is only a compact working representation of that source.
 
 ## Working Ideal Artifact Agent
 
 This is the current working picture of an ideal Source Artifact Agent. It is not final doctrine. Library may redefine the ideal after real sources, maps, briefs, books, and feedback show what actually helps.
 
-An ideal artifact agent should turn a source into a durable, inspectable source artifact that helps later book-building workflows without pretending the source has already become accepted knowledge.
+An ideal artifact agent should turn a source into a durable, inspectable, context-efficient source artifact that helps later seed-building and book-building workflows without pretending the source has already become accepted knowledge.
 
 The ideal agent should eventually be able to:
 
@@ -101,13 +197,15 @@ The ideal agent should eventually be able to:
 
 The ideal agent should not become a book writer, target decider, or truth authority. It should prepare source material so later stages can decide what belongs in seeds, targets, maps, briefs, and books.
 
+The ideal agent is valuable because it makes later agents better. Its success should be judged first by whether Seed Discovery can load many artifacts together and notice useful candidate seeds, and second by whether Map, Brief, Book, and Feedback workflows can use those artifacts with less rereading, less confusion, and better provenance.
+
 ## Starting Point: V0 Source Orientation Agent
 
 The v0 agent is the agent to build now. It is intentionally smaller than the ideal agent.
 
 The agent does not know what will matter later. It should not pretend to, and v0 should not try to approximate that judgment.
 
-The Source Artifact Agent should begin as a source orientation and compression tool. It should create a stable source identity, a small source summary, a tiny source preview, and traceability metadata. It should not decide importance, infer future targets, or claim that any detail matters beyond the source itself.
+The Source Artifact Agent should begin as a source orientation and compression tool. It should create a stable source identity, a small source summary, a tiny source preview, and traceability metadata. Its v0 output should be small enough that many artifacts can be packed into one LLM context for seed discovery. It should not decide importance, infer future targets, or claim that any detail matters beyond the source itself.
 
 The practical rule is:
 
@@ -183,6 +281,8 @@ This is not enough to support synthesis. It is only enough to identify the sourc
 
 V0 should optimize for fitting multiple artifacts into one model context.
 
+This is the main practical reason artifacts exist. A Seed Discovery Agent should be able to load many artifact packets together, compare them, and ask what knowledge targets may be worth proposing. Therefore, each artifact should be treated as a context budget object, not as a full source rewrite.
+
 The agent should:
 
 - keep the summary to 1 to 3 sentences
@@ -190,8 +290,9 @@ The agent should:
 - keep questions and tags capped
 - avoid copying full sections from the source
 - prefer pointers, hashes, line numbers, and compact excerpts over long generated prose
+- preserve just enough signal for later agents to decide whether to reopen the raw source
 
-V0 does not need a perfect token budget yet, but every artifact should be visibly smaller than the source except for tiny source files.
+V0 does not need a perfect token budget yet, but every artifact should be visibly smaller than the source except for tiny source files. A rough implementation target can be added later, such as "artifact packet should normally be no more than 5 to 15 percent of the source text," but v0 should start with visible compression and conservative caps rather than a hard token rule.
 
 ### No Confidence Claims In V0
 
@@ -234,6 +335,20 @@ Later workflows should be able to record:
 Only after that data exists should Library add semantic selection, candidate uses, confidence labels, or target prediction.
 
 ## Boundaries
+
+The Source Artifact Agent has upstream and downstream boundaries.
+
+Upstream boundary:
+
+- it may read selected source material and approved workflow context
+- it must preserve source identity, path, hash, and line references
+- it must not rewrite or normalize the source itself
+
+Downstream boundary:
+
+- it may produce a draft artifact packet that later workflows can inspect
+- it may include mechanical retrieval labels and explicit source questions
+- it must not decide seed acceptance, target membership, map relevance, brief synthesis, book claims, or feedback confidence
 
 The Source Artifact Agent may:
 
@@ -615,21 +730,70 @@ The run record is separate from the artifact manifest. The manifest travels with
 
 ## Downstream Integration
 
-Artifacts are source-level support surfaces.
+Artifacts are source-level support surfaces. They should be designed as stable inputs for the rest of the Library pipeline, not as isolated summaries.
 
-Seed Discovery Agent should read artifact packets and propose seeds when a need, pattern, question, task, or contradiction emerges.
+### Seed Discovery Handoff
 
-Map Agent should reference artifacts first and raw sources second. Maps explain why an artifact belongs to a target.
+Seed Discovery should read many artifact packets together and propose seeds when a need, pattern, question, task, contradiction, or underused idea emerges.
 
-Brief and Book agents should cite maps, which cite artifacts, which cite sources.
+This is the first major downstream use case for artifacts. The Seed Discovery Agent should not have to load every raw source file. It should begin with compact artifact packets, compare them inside one manageable context, and reopen raw sources only when the artifact packet indicates that deeper evidence is needed.
 
-Feedback should be able to mark artifacts as stale, insufficient, contradicted, or useful for a new target.
+The Source Artifact Agent may preserve explicit questions and lightweight retrieval tags, but it should not decide that those questions are seeds. A seed requires a downstream need or pattern, not only the existence of a source detail.
 
-Traceability should remain:
+### Target Handoff
+
+Targets are accepted work areas. The Source Artifact Agent should not create or register them.
+
+A later target workflow may use artifact packets to justify why a seed deserves a stable target identity. That target decision should remain separate from artifact extraction.
+
+### Map Handoff
+
+Map agents should use artifact packets as the first source-level interface and raw sources as the verification layer.
+
+A map should answer why an artifact belongs to a target. The artifact should only make that decision possible by preserving source identity, excerpts, questions, and limitations.
+
+### Brief and Book Handoff
+
+Brief and Book agents should cite maps, maps should cite artifacts, and artifacts should cite sources.
+
+The artifact should therefore preserve enough provenance for this chain:
 
 ```text
 brief/book -> map -> artifact packet -> source
 ```
+
+A brief or book may synthesize across many artifacts. The Source Artifact Agent should not do that synthesis.
+
+### Feedback Handoff
+
+Feedback workflows should be able to mark an artifact packet as:
+
+- useful for a target
+- too thin
+- misleading
+- stale
+- contradicted
+- needing richer extraction
+- needing raw source reread
+- repeatedly ignored by downstream workflows
+
+This feedback may later justify adding richer fields to artifact packets. Until that use data exists, v0 should remain mechanical and conservative.
+
+### Interface Principle
+
+Each Library step should pass forward a clear object:
+
+```text
+source file -> artifact packet -> seed proposal -> target index -> evidence map -> brief/book -> feedback record
+```
+
+The Source Artifact Agent owns only the first transformation:
+
+```text
+source file -> artifact packet
+```
+
+Everything after that is a downstream workflow.
 
 ## Safety Rules
 

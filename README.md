@@ -7,7 +7,7 @@ The current milestone is `v1-knowledge-library`: a file-based knowledge-target s
 ## What It Provides
 
 - `library/knowledge/01_sources/` for raw or lightly processed source material
-- `library/knowledge/02_artifacts/` for source-derived draft artifacts
+- `library/knowledge/02_artifacts/` for compact source-derived draft artifacts
 - `library/knowledge/03_seeds/` for proposed knowledge targets
 - `library/knowledge/04_targets/` for accepted target routing pages
 - `library/knowledge/05_maps/` for source-and-artifact membership by target
@@ -53,6 +53,8 @@ PYTHONPATH=src python3 -m library_cli source-artifact library/knowledge/01_sourc
 ```
 
 Draft artifacts are written under `library/knowledge/02_artifacts/`. Run records are written under `runs/`, which is local by default. Generated artifacts still require human approval before they become accepted library content.
+
+Artifacts are meant to be smaller than their sources so humans and language models can load multiple source packets in one working context while preserving links back to the original files.
 
 ## Run The Read-Only Console
 
