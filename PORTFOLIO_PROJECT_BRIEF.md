@@ -85,6 +85,28 @@ Core areas:
 - `catalog/`: workflow and prompt definitions for agent-assisted tasks.
 - `tests/`: validation, console, and agent behavior tests.
 
+## Agent Workflows
+
+Library treats agents as controlled workflow helpers, not autonomous authors. An LLM can participate in the decision process by reading source-grounded context, identifying patterns, proposing draft classifications, and explaining why material may belong in the next stage. Those recommendations remain draft-only until a human reviews and accepts them.
+
+The current implementation includes one built agent:
+
+| Agent | Purpose | Input | Core Work | Output |
+| --- | --- | --- | --- | --- |
+| Source Artifact Agent | Turns one source into a compact, traceable context packet for later knowledge work. | A selected source, workflow rules, prompt instructions, and any existing context about prior artifacts for that source. | Checks path safety, reads the source, preserves provenance, asks the provider to produce a structured draft, validates that draft, and records what was read and produced. | A draft artifact packet and a run record that a human can inspect before using the material as accepted support. |
+
+The broader agent design follows the same input-process-output pattern:
+
+| Planned Agent | Purpose | Input | Core Work | Output |
+| --- | --- | --- | --- | --- |
+| Seed Discovery Agent | Finds possible knowledge targets that may be worth organizing. | Source artifacts, open questions, repeated patterns, tasks, or contradictions. | Uses source-grounded evidence and LLM-assisted judgment to propose useful target candidates without accepting them automatically. | Draft seed proposals for human review. |
+| Target Index Agent | Drafts the navigation surface for an accepted knowledge target. | An accepted seed, related artifacts, and any existing target context. | Turns a selected knowledge need into a concise index that explains the target, maturity, and related material. | A draft target index for review. |
+| Map Agent | Connects a target to the material that supports it. | A target, related seeds, artifacts, and approved source references. | Sorts supporting material, explains why each item belongs, and marks primary, secondary, conflicting, or missing evidence. | A draft evidence map. |
+| Brief Drafter Agent | Creates compact synthesis for a target. | A map, supporting artifacts, approved source context, and any existing brief. | Uses the mapped evidence to summarize current understanding, constraints, tensions, and open questions. | A draft brief that stays tied to supporting evidence. |
+| Book Drafter Agent | Expands a mature target into long-form knowledge. | A map, brief, supporting artifacts, source context, and any existing book draft. | Builds a readable long-form treatment while preserving traceability and marking inference clearly. | A draft book for human review. |
+| Feedback Agent | Records how a knowledge output performed when used. | A target, brief, book, user context, or evidence of success, failure, contradiction, or needed revision. | Turns use experience into structured feedback without silently changing accepted content. | A draft feedback record. |
+| Evidence Checker Agent | Reviews whether a draft is supported by the mapped evidence. | A draft brief or book, its map, source artifacts, and approved source context. | Looks for unsupported, unclear, weakly grounded, or overextended claims. | A review report for human action. |
+
 ## Product Principles
 
 - Source-grounded output: every accepted knowledge surface should trace back to supporting material.
